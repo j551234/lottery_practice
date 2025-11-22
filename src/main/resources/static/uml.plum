@@ -1,0 +1,58 @@
+erDiagram
+
+    LOTTERY_EVENT {
+        bigint id PK
+        varchar name
+        tinyint is_active
+        int setting_amount
+        int remain_amount
+        timestamp created_time
+        timestamp updated_time
+    }
+
+    LOTTERY_PRIZE {
+        bigint id PK
+        bigint lottery_event_id FK
+        varchar name
+        decimal rate
+        int amount
+        timestamp created_time
+        timestamp updated_time
+    }
+
+    USER_LOTTERY_QUOTA {
+        bigint id PK
+        bigint uid FK
+        bigint lottery_event_id FK
+        int draw_quota
+        timestamp created_time
+        timestamp updated_time
+    }
+
+    USERS {
+        bigint id PK
+        varchar username
+        varchar password
+        varchar role
+        timestamp created_time
+        timestamp updated_time
+    }
+
+    WIN_RECORD {
+        bigint id PK
+        bigint uid FK
+        bigint lottery_event_id FK
+        int draw_prize_id
+        int remain_prize_amount
+        timestamp created_time
+        timestamp updated_time
+    }
+
+    LOTTERY_EVENT ||--o{ LOTTERY_PRIZE : contains
+    LOTTERY_EVENT ||--o{ USER_LOTTERY_QUOTA : has
+    LOTTERY_EVENT ||--o{ WIN_RECORD : logs
+
+    USERS ||--o{ USER_LOTTERY_QUOTA : owns
+    USERS ||--o{ WIN_RECORD : wins
+
+    LOTTERY_PRIZE ||--o{ WIN_RECORD : "won by"

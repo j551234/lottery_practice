@@ -100,6 +100,32 @@ public class GlobalExceptionHandler {
 
 
 
+
+
+    @ExceptionHandler(NoEntryException.class)
+    public ResponseEntity<ApiResponse<Void>> handleNoEntryException(
+            NoEntryException ex,
+            WebRequest request
+    ) {
+        log.error("Lottery exception occurred: {}", ex.getMessage());
+
+        ApiResponse.ErrorDetails errorDetails = ApiResponse.ErrorDetails.builder()
+                .type("LOTTERY_ERROR")
+                .detail(ex.getMessage())
+                .build();
+
+        ApiResponse<Void> response = ApiResponse.error(
+                400,
+                ex.getMessage(),
+                errorDetails
+        );
+        response.setPath(request.getDescription(false).replace("uri=", ""));
+
+        return ResponseEntity.badRequest().body(response);
+    }
+
+
+
     /**
      * Handle all other exceptions
      */

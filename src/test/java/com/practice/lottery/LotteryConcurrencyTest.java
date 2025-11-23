@@ -90,8 +90,8 @@ public class LotteryConcurrencyTest {
     public void testConcurrentDraws_SingleUser() throws Exception {
         log.info("=== Test 1: Concurrent Draws - Single User ===");
 
-        int totalDraws = 100;
-        int concurrentThreads = 50;
+        int totalDraws = 1000;
+        int concurrentThreads = 100;
 
         // Set user quota
         updateUserQuota(TEST_USER_ID, totalDraws);
@@ -492,8 +492,8 @@ public class LotteryConcurrencyTest {
         log.info("Successful draws: {}", successCount.get());
         log.info("Failed draws: {}", errorCount.get());
         log.info("Total duration: {} ms", duration);
-        log.info("Throughput: {:.2f} draws/second", totalDraws * 1000.0 / duration);
-        log.info("Average response time: {:.2f} ms", avgResponseTime);
+        log.info("Throughput: {} draws/second", totalDraws * 1000.0 / duration);
+        log.info("Average response time: {} ms", avgResponseTime);
         log.info("Min response time: {} ms", minResponseTime);
         log.info("Max response time: {} ms", maxResponseTime);
 

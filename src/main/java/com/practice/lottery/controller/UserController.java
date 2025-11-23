@@ -37,7 +37,7 @@ public class UserController {
             @PathVariable Long eventId
     ) {
         User user = (User) auth.getPrincipal();
-        String result = lotteryService.drawRedis(eventId, user.getId());
+        String result = lotteryService.drawRedis(eventId, user.getId(), true);
         lotterySyncService.syncUserQuota(eventId, user.getId());
         Map<String, Object> data = Map.of(
                 "prize", result,

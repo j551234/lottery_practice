@@ -1,11 +1,12 @@
 package com.practice.lottery.controller.request;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import tools.jackson.databind.PropertyNamingStrategies;
-import tools.jackson.databind.annotation.JsonNaming;
+
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 
 

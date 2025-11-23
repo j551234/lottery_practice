@@ -1,5 +1,6 @@
 package com.practice.lottery.config.security;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.practice.lottery.dao.entity.User;
 import com.practice.lottery.dao.repository.UserRepository;
 import io.jsonwebtoken.Claims;
@@ -11,7 +12,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
-import tools.jackson.databind.ObjectMapper;
+
 
 import java.io.IOException;
 import java.time.LocalDateTime;

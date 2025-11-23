@@ -151,13 +151,14 @@ public class LotterySyncService {
 
         long redisChance = userChance.get();
 
-        UserLotteryQuota quota = userLotteryQuotaRepository
-                .findByUidAndLotteryEventId(userId, eventId)
-                .orElseThrow(() -> new LotteryException("User quota not found"));
 
-        int dbChance = quota.getDrawQuota();
 
-        if (redisChance != dbChance) {
+        if (redisChance == 0) {
+            UserLotteryQuota quota = userLotteryQuotaRepository
+                    .findByUidAndLotteryEventId(userId, eventId)
+                    .orElseThrow(() -> new LotteryException("User quota not found"));
+
+            int dbChance = quota.getDrawQuota();
             quota.setDrawQuota((int) redisChance);
             userLotteryQuotaRepository.save(quota);
 

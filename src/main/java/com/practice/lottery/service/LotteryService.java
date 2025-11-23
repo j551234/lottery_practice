@@ -28,6 +28,7 @@ public class LotteryService {
     private final RedissonClient redissonClient;
     private final UserLotteryQuotaRepository userLotteryQuotaRepository;
     private final WinRecordService winRecordService;
+    private final LotterySyncService lotterySyncService;
 
     // Redis key templates
     private static final String EVENT_REMAIN_KEY = "lottery:%d:remainAmount";
@@ -107,17 +108,15 @@ public class LotteryService {
 
             return selectedPrize;
 
-        } catch (NoEntryException e) {
-            log.warn("No entry exception - eventId: {}, userId: {}, message: {}",
-                    lotteryEventId, userId, e.getMessage());
-            throw e;
-        } catch (LotteryException e) {
+        }  catch (LotteryException e) {
             log.error("Lottery business error - eventId: {}, userId: {}, message: {}",
                     lotteryEventId, userId, e.getMessage());
+            lotterySyncService.emergencySyncAfterError(lotteryEventId,userId,e);
             throw e;
         } catch (Exception e) {
             log.error("Unexpected lottery error - eventId: {}, userId: {}",
                     lotteryEventId, userId, e);
+            lotterySyncService.emergencySyncAfterError(lotteryEventId,userId,e);
             throw new LotteryException("System error, please try again later");
         }
     }

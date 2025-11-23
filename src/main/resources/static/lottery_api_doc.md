@@ -170,7 +170,49 @@ curl -X POST http://localhost:8080/user/event/1/draw \
 ```
 
 ---
+### Multi Draw Lottery
+Participate in a lottery draw multiple times in one request. Each draw will update the user's quota.
 
+**Endpoint**: `POST /user/event/{eventId}/multi-draw`
+
+**Access**: Authenticated Users
+
+**Path Parameters**:
+- `eventId` (Long) - ID of the lottery event
+
+**Query Parameters**:
+- `times` (Integer, required) - Number of draws. Must be greater than 0.
+
+**Example Request**:
+```bash
+# Draw 5 times
+curl -X POST "http://localhost:8080/user/event/1/multi-draw?times=5" \
+  -H "Authorization: Bearer {your_token}"
+  
+Response (200 OK):  
+ ```json 
+  {
+  "code": 200,
+  "message": "Lottery drawn successfully",
+  "data": [
+    {
+      "prize": "FirstPrize",
+      "is_winner": true
+    },
+    {
+      "prize": "Miss",
+      "is_winner": false
+    },
+    {
+      "prize": "ThirdPrize",
+      "is_winner": true
+    }
+  ],
+  "timestamp": "2025-11-23T10:31:00"
+}
+```
+  
+---
 ### Get My Win Records
 
 Retrieve all win records for the authenticated user.

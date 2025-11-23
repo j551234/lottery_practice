@@ -454,12 +454,12 @@ CREATE TABLE `win_record` (
 
 #### 用戶 API
 
-| 方法 | 端點 | 描述 | 認證 |
-|------|------|------|------|
-| GET | `/user/test` | 測試認證 | ✅ USER |
-| POST | `/user/event/{eventId}/draw` | 參與抽獎 | ✅ USER |
-| POST | `/user/event/{eventId}/draw?isKeepResult=true` | 參與抽獎(保存記錄) | ✅ USER |
-| GET | `/user/my-records` | 查看中獎記錄 | ✅ USER |
+| 方法 | 端點                                            | 描述     | 認證 |
+|------|-----------------------------------------------|--------|------|
+| GET | `/user/test`                                  | 測試認證   | ✅ USER |
+| POST | `/user/event/{eventId}/draw`                  | 參與抽獎   | ✅ USER |
+| POST | `/user/event/{eventId}/mulit-draw?times=` | 多次抽獎   | ✅ USER |
+| GET | `/user/my-records`                            | 查看中獎記錄 | ✅ USER |
 
 #### 管理員 API
 
@@ -485,7 +485,7 @@ curl -X POST http://localhost:8080/auth/login \
   }'
 ```
 
-響應：
+response:
 ```json
 {
   "code": 200,
@@ -508,6 +508,47 @@ curl -X POST http://localhost:8080/auth/login \
 curl -X POST http://localhost:8080/user/event/1/draw \
   -H "Authorization: Bearer {your_token}"
 
+response:
+```json
+{
+  "code": 200,
+  "message": "Lottery drawn successfully",
+  "data": {
+    "prize": "FirstPrize",
+    "is_winner": true
+  },
+  "timestamp": "2025-11-23T10:31:00"
+}
+```
+
+```bash
+# 快速抽獎
+# 多次抽獎，times=5
+curl -X POST "http://localhost:8080/user/event/1/multi-draw?times=5" \
+  -H "Authorization: Bearer {your_token}"
+
+response:
+```json
+{
+  "code": 200,
+  "message": "Lottery drawn successfully",
+  "data": [
+    {
+      "prize": "FirstPrize",
+      "is_winner": true
+    },
+    {
+      "prize": "Miss",
+      "is_winner": false
+    },
+    {
+      "prize": "ThirdPrize",
+      "is_winner": true
+    }
+  ],
+  "timestamp": "2025-11-23T10:31:00
+````
+
 
 #### 3. 查看中獎記錄
 
@@ -516,7 +557,7 @@ curl -X GET http://localhost:8080/user/my-records \
   -H "Authorization: Bearer {your_token}"
 ```
 
-響應：
+response:
 ```json
 {
   "code": 200,
